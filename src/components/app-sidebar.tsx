@@ -123,7 +123,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar side="right" collapsible="icon" {...props}>
       <SidebarHeader className="h-18 w-full flex flex-row items-center justify-start p-0 pl-4">
-        {!isCollapsed && <Image src="/shagalu_logo.png" alt="Shagalu Logo" width={100} height={56} className="h-14 w-auto" />}
+        {!isCollapsed && (
+          <img 
+            src="/shagalulogo.png" 
+            alt="Shagalu Logo" 
+            className="h-14 w-auto max-w-[100px]" 
+            onError={(e) => console.log('Image failed to load:', e)}
+            onLoad={() => console.log('Image loaded successfully')}
+          />
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />
