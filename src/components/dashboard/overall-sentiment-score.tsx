@@ -1,13 +1,16 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Smile, Star } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export function OverallSentimentScore() {
+  const t = useTranslations("OverallSentimentScore")
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">
-          Overall Sentiment
-        </CardTitle>
+        <CardTitle className="text-sm font-medium">{t("title")}</CardTitle>
         <Smile className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
@@ -22,7 +25,7 @@ export function OverallSentimentScore() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground mt-1">
-          Based on 12,345 reviews and mentions
+          {t("description")}
         </p>
       </CardContent>
     </Card>

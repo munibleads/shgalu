@@ -15,37 +15,45 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useTranslations } from "next-intl"
 
-const chartData = [
+const rawChartData = [
   { sentiment: "Positive", value: 650, fill: "var(--color-Positive)" },
   { sentiment: "Neutral", value: 200, fill: "var(--color-Neutral)" },
   { sentiment: "Negative", value: 150, fill: "var(--color-Negative)" },
 ]
 
-const chartConfig = {
-  value: {
-    label: "Count",
-  },
-  Positive: {
-    label: "Positive",
-    color: "var(--positive)",
-  },
-  Neutral: {
-    label: "Neutral",
-    color: "var(--neutral)",
-  },
-  Negative: {
-    label: "Negative",
-    color: "var(--negative)",
-  },
-} satisfies ChartConfig
-
 export function SentimentDistribution() {
+  const t = useTranslations("SentimentDistribution")
+
+  const chartData = rawChartData.map((item) => ({
+    ...item,
+    sentiment: t(item.sentiment.toLowerCase()),
+  }))
+
+  const chartConfig = {
+    value: {
+      label: t("count"),
+    },
+    Positive: {
+      label: t("positive"),
+      color: "var(--positive)",
+    },
+    Neutral: {
+      label: t("neutral"),
+      color: "var(--neutral)",
+    },
+    Negative: {
+      label: t("negative"),
+      color: "var(--negative)",
+    },
+  } satisfies ChartConfig
+
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Sentiment Distribution</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer

@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -15,19 +17,20 @@ import {
   IconBrandYoutube,
 } from "@tabler/icons-react"
 import { Flame } from "lucide-react"
+import { useTranslations } from "next-intl"
 
-const insights = [
+const rawInsights = [
   {
     icon: <IconBrandSnapchat className="size-5" />,
-    text: "A viral video on Snapchat discusses your product of rose perfumes, driving a 30% increase in mentions.",
+    textKey: "insight1",
   },
   {
     icon: <IconBrandAmazon className="size-5" />,
-    text: 'Customers on Amazon frequently mention the new "Oud" scent as a standout favorite.',
+    textKey: "insight2",
   },
   {
     icon: <IconBrandInstagram className="size-5" />,
-    text: "Negative comments on Instagram are centered around the recent price increase for the body lotion.",
+    textKey: "insight3",
   },
 ]
 
@@ -77,21 +80,23 @@ const sources = [
 ]
 
 export function AiAnalysis() {
+  const t = useTranslations("AiAnalysis")
+
+  const insights = rawInsights.map((insight) => ({
+    ...insight,
+    text: t(insight.textKey),
+  }))
+
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>AI Analysis</CardTitle>
-        <CardDescription>
-          A quick breakdown of sentiment analysis and top insights from all
-          sources.
-        </CardDescription>
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-6">
           <p className="mb-4 text-sm text-muted-foreground">
-            Overall sentiment is positive, with a slight increase in negative
-            feedback on Twitter regarding packaging quality. Most praise is
-            directed at product effectiveness and customer service.
+            {t("overallSentiment")}
           </p>
           <div className="flex flex-wrap gap-2">
             {sources.map((source) => (
@@ -107,7 +112,7 @@ export function AiAnalysis() {
           </div>
         </div>
         <div>
-          <h4 className="mb-4 text-sm font-semibold">Top 3 Insights:</h4>
+          <h4 className="mb-4 text-sm font-semibold">{t("topInsights")}</h4>
           <ul className="space-y-4">
             {insights.map((insight, index) => (
               <li key={index} className="flex items-start gap-3">

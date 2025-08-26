@@ -13,8 +13,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { getTranslations } from "next-intl/server"
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const tNav = await getTranslations("Nav")
+  const t = await getTranslations("Reports")
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -29,11 +33,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${locale}`}>{tNav("dashboard")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Reports</BreadcrumbPage>
+                  <BreadcrumbPage>{tNav("reports")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -41,15 +45,15 @@ export default function Page() {
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="flex items-center">
-            <h1 className="text-lg font-semibold md:text-2xl">Reports</h1>
+            <h1 className="text-lg font-semibold md:text-2xl">{t("title")}</h1>
           </div>
           <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
             <div className="flex flex-col items-center gap-1 text-center">
               <h3 className="text-2xl font-bold tracking-tight">
-                You have no reports
+                {t("noReports")}
               </h3>
               <p className="text-sm text-muted-foreground">
-                Reports will be generated here.
+                {t("generatedHere")}
               </p>
             </div>
           </div>

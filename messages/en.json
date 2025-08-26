@@ -1,0 +1,123 @@
+{
+  "Dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "aiProductAnalyzer": "AI Product Analyzer",
+    "aiProductAnalyzerDescription": "Analyze reviews of your products using advanced AI",
+    "analyzeNow": "Analyze Now"
+  },
+  "OverallSentimentScore": {
+    "title": "Overall Sentiment",
+    "description": "Based on 12,345 reviews and mentions"
+  },
+  "TotalReviews": {
+    "title": "Reviews & Mentions",
+    "description": "Analyzed across all platforms"
+  },
+  "NegativeFeedbackTrend": {
+    "title": "Negative Feedback Trend",
+    "description": "Decrease in negative mentions vs. last month"
+  },
+  "SentimentDistribution": {
+    "title": "Sentiment Distribution",
+    "description": "January - June 2024",
+    "positive": "Positive",
+    "neutral": "Neutral",
+    "negative": "Negative",
+    "count": "Count"
+  },
+  "AiAnalysis": {
+    "title": "AI Analysis",
+    "description": "A quick breakdown of sentiment analysis and top insights from all sources.",
+    "overallSentiment": "Overall sentiment is positive, with a slight increase in negative feedback on Twitter regarding packaging quality. Most praise is directed at product effectiveness and customer service.",
+    "topInsights": "Top 3 Insights:",
+    "insight1": "A viral video on Snapchat discusses your product of rose perfumes, driving a 30% increase in mentions.",
+    "insight2": "Customers on Amazon frequently mention the new \"Oud\" scent as a standout favorite.",
+    "insight3": "Negative comments on Instagram are centered around the recent price increase for the body lotion."
+  },
+  "MostDislikedProducts": {
+    "title": "Most Disliked Products",
+    "description": "Products with the highest negative feedback.",
+    "product": "Product",
+    "negativeMentions": "Neg. Mentions",
+    "avgRating": "Avg. Rating"
+  },
+  "MostLikedProducts": {
+    "title": "Most Liked Products",
+    "description": "Products with the highest positive feedback.",
+    "product": "Product",
+    "positiveMentions": "Pos. Mentions",
+    "avgRating": "Avg. Rating"
+  }
+  ,
+  "Nav": {
+    "platform": "Platform",
+    "dashboard": "Dashboard",
+    "aiAnalyzer": "AI Analyzer",
+    "products": "Products",
+    "reports": "Reports",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "ProductsPage": {
+    "addProduct": "Add Product"
+  },
+  "Reports": {
+    "title": "Reports",
+    "noReports": "You have no reports",
+    "generatedHere": "Reports will be generated here."
+  },
+  "Settings": {
+    "integrations": "Integrations",
+    "addIntegration": "Add Integration",
+    "connected": "Connected",
+    "available": "Available",
+    "lastSync": "Last sync:",
+    "orders": "Orders:",
+    "reviews": "Reviews:",
+    "viewDetails": "View Details",
+    "connect": "Connect"
+  },
+  "ProductCard": {
+    "viewDetails": "View Details",
+    "reviews": "reviews",
+    "by": "By"
+  },
+  "AiAnalyzerPage": {
+    "productAnalysis": "Product Analysis",
+    "enterUrl": "Enter an Amazon product URL or ASIN to analyze product reviews and details",
+    "inputPlaceholder": "Enter Amazon URL or ASIN (e.g., https://amazon.com/dp/B07ZPKBL9V)",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing...",
+    "productOverview": "Product Overview",
+    "reviews": "reviews",
+    "customerInsights": "Customer Insights",
+    "averageRating": "Average Rating",
+    "totalReviews": "Total Reviews",
+    "reviewsSummary": "Reviews Summary:",
+    "totalReviewsLabel": "Total Reviews:",
+    "withReviews": "With Reviews:",
+    "totalPages": "Total Pages:",
+    "availability": "Availability:",
+    "productVariations": "Product Variations:",
+    "colors": "Colors:",
+    "sizes": "Sizes:",
+    "moreSuffix": "more",
+    "topReviews": "Top Reviews",
+    "verified": "Verified",
+    "peopleFoundHelpful": "people found this helpful",
+    "noReviewsAvailable": "No reviews available.",
+    "readyTitle": "Ready to Analyze",
+    "readyDescription": "Enter an Amazon product URL or ASIN above to get detailed product analysis and review insights"
+  },
+  "SettingsDescriptions": {
+    "amazon": "Sync products and orders from Amazon marketplace",
+    "noon": "Middle East's leading online marketplace",
+    "salla": "Saudi Arabia's #1 eCommerce platform",
+    "googleReviews": "Monitor and respond to customer reviews",
+    "shopify": "Connect your Shopify store",
+    "woocommerce": "WordPress eCommerce solution",
+    "magento": "Enterprise eCommerce platform",
+    "trustpilot": "Customer review management"
+  }
+}

@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -14,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useTranslations } from "next-intl"
 
 const likedProducts = [
   {
@@ -44,21 +47,21 @@ const likedProducts = [
 ]
 
 export function MostLikedProducts() {
+  const t = useTranslations("MostLikedProducts")
+
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Most Liked Products</CardTitle>
-        <CardDescription>
-          Products with the highest positive feedback.
-        </CardDescription>
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead className="text-right">Pos. Mentions</TableHead>
-              <TableHead className="text-right">Avg. Rating</TableHead>
+              <TableHead>{t("product")}</TableHead>
+              <TableHead className="text-right">{t("positiveMentions")}</TableHead>
+              <TableHead className="text-right">{t("avgRating")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

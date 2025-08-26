@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface ProductData {
   asin: string;
@@ -28,6 +29,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const t = useTranslations("ProductCard");
   const truncateWords = (text: string, maxWords: number = 10) => {
     const words = text.split(' ');
     if (words.length <= maxWords) return text;
@@ -59,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex flex-col gap-2">
             <CardTitle className="text-lg">{truncateWords(product.product_title, 8)}</CardTitle>
             {product.product_byline && (
-              <CardDescription>{product.product_byline.replace('العلامة التجارية: ', 'By: ')}</CardDescription>
+              <CardDescription>{product.product_byline.replace('العلامة التجارية: ', `${t('by')}: `)}</CardDescription>
             )}
           </div>
           {product.category?.name && (
@@ -85,7 +87,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           {product.product_num_ratings > 0 && (
             <span className="text-sm text-muted-foreground">
-              {product.product_star_rating?.toFixed(1) || 'N/A'} ({product.product_num_ratings} reviews)
+              {product.product_star_rating?.toFixed(1) || 'N/A'} ({product.product_num_ratings} {t('reviews')})
             </span>
           )}
         </div>
@@ -100,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.product_url && (
           <Button variant="outline" className="w-full" asChild>
             <a href={product.product_url} target="_blank" rel="noopener noreferrer">
-              View Details
+              {t('viewDetails')}
             </a>
           </Button>
         )}

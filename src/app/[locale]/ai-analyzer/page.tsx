@@ -22,6 +22,8 @@ import { Badge } from "@/components/ui/badge"
 import { Star, Package, Users, MessageSquare } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 interface Review {
   author: string
@@ -101,6 +103,10 @@ interface ProductData {
 }
 
 export default function Page() {
+  const params = useParams()
+  const locale = params.locale as string
+  const tNav = useTranslations("Nav")
+  const t = useTranslations("AiAnalyzerPage")
   const [input, setInput] = useState("")
   const [productData, setProductData] = useState<ProductData | null>(null)
   const [reviewsData, setReviewsData] = useState<ReviewsResponse | null>(null)
@@ -247,11 +253,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${locale}`}>{tNav("dashboard")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>AI Analyzer</BreadcrumbPage>
+                  <BreadcrumbPage>{tNav("aiAnalyzer")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -264,22 +270,22 @@ export default function Page() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
-                Product Analysis
+                {t("productAnalysis")}
               </CardTitle>
               <CardDescription>
-                Enter an Amazon product URL or ASIN to analyze product reviews and details
+                {t("enterUrl")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-2">
                 <Input
-                  placeholder="Enter Amazon URL or ASIN (e.g., https://amazon.com/dp/B07ZPKBL9V)"
+                  placeholder={t("inputPlaceholder")}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && fetchProductData()}
                 />
                 <Button onClick={fetchProductData} disabled={loading}>
-                  {loading ? "Analyzing..." : "Analyze"}
+                  {loading ? t("analyzing") : t("analyze")}
                 </Button>
               </div>
               {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
@@ -296,7 +302,7 @@ export default function Page() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5" />
-                    Product Overview
+                    {t("productOverview")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -318,7 +324,7 @@ export default function Page() {
                         {renderStars(productData.product_reviews.rating.toString())}
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
-                          <span className="text-sm">{productData.product_reviews.count ? productData.product_reviews.count.toLocaleString() : '0'} reviews</span>
+                          <span className="text-sm">{productData.product_reviews.count ? productData.product_reviews.count.toLocaleString() : '0'} {t("reviews")}</span>
                         </div>
                       </div>
                     </div>
@@ -331,7 +337,7 @@ export default function Page() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MessageSquare className="h-5 w-5" />
-                    Customer Insights
+                    {t("customerInsights")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -339,29 +345,29 @@ export default function Page() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold text-primary">{productData.product_reviews.rating.toFixed(1)}</div>
-                        <div className="text-sm text-muted-foreground">Average Rating</div>
+                        <div className="text-sm text-muted-foreground">{t("averageRating")}</div>
                         <div className="mt-1">{renderStars(productData.product_reviews.rating.toString())}</div>
                       </div>
                       <div className="text-center p-4 bg-muted rounded-lg">
                         <div className="text-2xl font-bold text-primary">{productData.product_reviews.count.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Total Reviews</div>
+                        <div className="text-sm text-muted-foreground">{t("totalReviews")}</div>
                       </div>
                     </div>
 
                     {reviewsData && (
                       <div>
-                        <h4 className="font-semibold mb-2">Reviews Summary:</h4>
+                        <h4 className="font-semibold mb-2">{t("reviewsSummary")}</h4>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div className="flex justify-between">
-                            <span>Total Reviews:</span>
+                            <span>{t("totalReviewsLabel")}</span>
                             <span className="font-medium">{(reviewsData.data?.total_reviews || reviewsData.total_reviews || 0).toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>With Reviews:</span>
+                            <span>{t("withReviews")}</span>
                             <span className="font-medium">{(reviewsData.data?.with_reviews || reviewsData.with_reviews || 0).toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Total Pages:</span>
+                            <span>{t("totalPages")}</span>
                             <span className="font-medium">{reviewsData.data?.total_pages || reviewsData.total_pages || 0}</span>
                           </div>
                         </div>
@@ -370,7 +376,7 @@ export default function Page() {
 
                     {productData.availability && (
                       <div>
-                        <h4 className="font-semibold mb-2">Availability:</h4>
+                        <h4 className="font-semibold mb-2">{t("availability")}</h4>
                         <Badge variant={productData.availability.type === 'IN_STOCK' ? 'default' : 'secondary'}>
                           {productData.availability.message || productData.availability.type}
                         </Badge>
@@ -379,11 +385,11 @@ export default function Page() {
 
                     {productData.product_variations && (
                       <div>
-                        <h4 className="font-semibold mb-2">Product Variations:</h4>
+                        <h4 className="font-semibold mb-2">{t("productVariations")}</h4>
                         <div className="space-y-2">
                           {productData.product_variations.color && (
                             <div className="flex flex-wrap gap-1">
-                              <span className="text-sm font-medium">Colors:</span>
+                              <span className="text-sm font-medium">{t("colors")}</span>
                               <div className="flex flex-wrap gap-1">
                                 {productData.product_variations.color.slice(0, 5).map((color, index) => (
                                   <Badge key={index} variant="outline" className="text-xs">
@@ -392,7 +398,7 @@ export default function Page() {
                                 ))}
                                 {productData.product_variations.color.length > 5 && (
                                   <Badge variant="outline" className="text-xs">
-                                    +{productData.product_variations.color.length - 5} more
+                                    +{productData.product_variations.color.length - 5} {t("moreSuffix")}
                                   </Badge>
                                 )}
                               </div>
@@ -400,7 +406,7 @@ export default function Page() {
                           )}
                           {productData.product_variations.size && (
                             <div className="flex flex-wrap gap-1">
-                              <span className="text-sm font-medium">Sizes:</span>
+                              <span className="text-sm font-medium">{t("sizes")}</span>
                               <div className="flex flex-wrap gap-1">
                                 {productData.product_variations.size.slice(0, 5).map((size, index) => (
                                   <Badge key={index} variant="outline" className="text-xs">
@@ -409,7 +415,7 @@ export default function Page() {
                                 ))}
                                 {productData.product_variations.size.length > 5 && (
                                   <Badge variant="outline" className="text-xs">
-                                    +{productData.product_variations.size.length - 5} more
+                                    +{productData.product_variations.size.length - 5} {t("moreSuffix")}
                                   </Badge>
                                 )}
                               </div>
@@ -427,7 +433,7 @@ export default function Page() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <MessageSquare className="h-5 w-5" />
-                    Top Reviews
+                    {t("topReviews")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -441,7 +447,7 @@ export default function Page() {
                                 <div className="flex items-center justify-between">
                                   <h5 className="font-medium text-sm">{review.author}</h5>
                                   {review.verified_purchase && (
-                                    <Badge variant="outline" className="text-xs">Verified</Badge>
+                                    <Badge variant="outline" className="text-xs">{t("verified")}</Badge>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2">
@@ -452,7 +458,7 @@ export default function Page() {
                                 <p className="text-sm text-muted-foreground line-clamp-3">{review.body}</p>
                                 {review.helpful_count > 0 && (
                                   <div className="text-xs text-muted-foreground">
-                                    {review.helpful_count} people found this helpful
+                                    {review.helpful_count} {t("peopleFoundHelpful")}
                                   </div>
                                 )}
                               </div>
@@ -463,7 +469,7 @@ export default function Page() {
                     ) : (
                       <div className="flex items-center justify-center py-8">
                         <div className="text-center">
-                          <p className="text-sm text-muted-foreground italic">No reviews available.</p>
+                          <p className="text-sm text-muted-foreground italic">{t("noReviewsAvailable")}</p>
                           {reviewsData && (
                             <p className="text-xs text-muted-foreground mt-2">
                               Debug: {Object.keys(reviewsData).join(', ')}
@@ -482,9 +488,9 @@ export default function Page() {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <Package className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Ready to Analyze</h3>
+                <h3 className="text-xl font-semibold mb-2">{t("readyTitle")}</h3>
                 <p className="text-muted-foreground text-center">
-                  Enter an Amazon product URL or ASIN above to get detailed product analysis and review insights
+                  {t("readyDescription")}
                 </p>
               </CardContent>
             </Card>

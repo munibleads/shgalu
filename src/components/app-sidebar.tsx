@@ -8,6 +8,7 @@ import {
   Command,
   FileText,
   GalleryVerticalEnd,
+  Languages,
   LayoutDashboard,
   Package,
   Settings2,
@@ -23,6 +24,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useSidebar } from "@/components/ui/sidebar"
+import { LanguageSwitcher } from "./language-switcher"
+import { useLocale, useTranslations } from "next-intl"
 
 // This is sample data.
 const data = {
@@ -81,15 +84,51 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
   const isCollapsed = state === "collapsed"
+  const locale = useLocale()
+  const t = useTranslations("Nav")
+
+  const navMain = [
+    {
+      title: t("dashboard"),
+      url: `/${locale}`,
+      icon: LayoutDashboard,
+    },
+    {
+      title: t("aiAnalyzer"),
+      url: `/${locale}/ai-analyzer`,
+      icon: Bot,
+    },
+    {
+      title: t("products"),
+      url: `/${locale}/products`,
+      icon: Package,
+    },
+    {
+      title: t("reports"),
+      url: `/${locale}/reports`,
+      icon: FileText,
+    },
+    {
+      title: t("settings"),
+      url: `/${locale}/settings`,
+      icon: Settings2,
+    },
+    {
+      title: t("language"),
+      icon: Languages,
+      customComponent: <LanguageSwitcher />,
+    },
+  ]
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar side="right" collapsible="icon" {...props}>
       <SidebarHeader className="h-18 w-full flex flex-row items-center justify-start p-0 pl-4">
         {!isCollapsed && <Image src="/shagalu_logo.png" alt="Shagalu Logo" width={100} height={56} className="h-14 w-auto" />}
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="flex-row items-center">
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />

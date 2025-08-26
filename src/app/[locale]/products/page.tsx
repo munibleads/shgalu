@@ -1,3 +1,5 @@
+"use client"
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -15,7 +17,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { ProductCard } from "@/components/ui/product-card"
-import { Plus } from "lucide-react";
+import { Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useParams } from "next/navigation"
 
 interface ProductData {
   asin: string;
@@ -205,6 +209,11 @@ const product4 = {
 };
 
 export default function Page() {
+  const params = useParams()
+  const locale = params.locale as string
+  const t = useTranslations("Nav")
+  const tProducts = useTranslations("ProductsPage")
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -219,11 +228,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${locale}`}>{t("dashboard")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Products</BreadcrumbPage>
+                  <BreadcrumbPage>{t("products")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -239,7 +248,7 @@ export default function Page() {
           <div className="flex items-center justify-center">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
-              Add Product
+              {tProducts("addProduct")}
             </Button>
           </div>
         </main>

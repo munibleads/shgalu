@@ -1,0 +1,123 @@
+{
+  "Dashboard": {
+    "title": "لوحة التحكم",
+    "overview": "نظرة عامة",
+    "aiProductAnalyzer": "محلل المنتجات بالذكاء الاصطناعي",
+    "aiProductAnalyzerDescription": "حلل مراجعات منتجاتك باستخدام الذكاء الاصطناعي المتقدم",
+    "analyzeNow": "حلل الآن"
+  },
+  "OverallSentimentScore": {
+    "title": "الشعور العام",
+    "description": "بناءً على 12,345 مراجعة وإشارة"
+  },
+  "TotalReviews": {
+    "title": "المراجعات والإشارات",
+    "description": "تم تحليلها عبر جميع المنصات"
+  },
+  "NegativeFeedbackTrend": {
+    "title": "اتجاه التعليقات السلبية",
+    "description": "انخفاض في الإشارات السلبية مقارنة بالشهر الماضي"
+  },
+  "SentimentDistribution": {
+    "title": "توزيع الشعور",
+    "description": "يناير - يونيو 2024",
+    "positive": "إيجابي",
+    "neutral": "محايد",
+    "negative": "سلبي",
+    "count": "العدد"
+  },
+  "AiAnalysis": {
+    "title": "تحليل الذكاء الاصطناعي",
+    "description": "تحليل سريع لتحليل المشاعر وأهم الأفكار من جميع المصادر.",
+    "overallSentiment": "الشعور العام إيجابي، مع زيادة طفيفة في التعليقات السلبية على تويتر بخصوص جودة التغليف. معظم الثناء موجه لفعالية المنتج وخدمة العملاء.",
+    "topInsights": "أهم 3 أفكار:",
+    "insight1": "فيديو انتشر بسرعة على سناب شات يناقش منتجكم من عطور الورد، مما أدى إلى زيادة بنسبة 30% في الإشارات.",
+    "insight2": "يذكر العملاء على أمازون بشكل متكرر رائحة \"العود\" الجديدة كمفضلة بارزة.",
+    "insight3": "تتمحور التعليقات السلبية على انستغرام حول الزيادة الأخيرة في أسعار لوشن الجسم."
+  },
+  "MostDislikedProducts": {
+    "title": "المنتجات الأكثر كرهاً",
+    "description": "المنتجات ذات أعلى ردود فعل سلبية.",
+    "product": "المنتج",
+    "negativeMentions": "الإشارات السلبية",
+    "avgRating": "متوسط التقييم"
+  },
+  "MostLikedProducts": {
+    "title": "المنتجات الأكثر إعجاباً",
+    "description": "المنتجات ذات أعلى ردود فعل إيجابية.",
+    "product": "المنتج",
+    "positiveMentions": "الإشارات الإيجابية",
+    "avgRating": "متوسط التقييم"
+  }
+  ,
+  "Nav": {
+    "platform": "المنصة",
+    "dashboard": "لوحة التحكم",
+    "aiAnalyzer": "محلل الذكاء الاصطناعي",
+    "products": "المنتجات",
+    "reports": "التقارير",
+    "settings": "الإعدادات",
+    "language": "اللغة"
+  },
+  "ProductsPage": {
+    "addProduct": "أضف منتج"
+  },
+  "Reports": {
+    "title": "التقارير",
+    "noReports": "لا توجد تقارير",
+    "generatedHere": "سيتم إنشاء التقارير هنا."
+  },
+  "Settings": {
+    "integrations": "التكاملات",
+    "addIntegration": "أضف تكامل",
+    "connected": "متصل",
+    "available": "متاح",
+    "lastSync": "آخر مزامنة:",
+    "orders": "الطلبات:",
+    "reviews": "المراجعات:",
+    "viewDetails": "عرض التفاصيل",
+    "connect": "اتصال"
+  },
+  "ProductCard": {
+    "viewDetails": "عرض التفاصيل",
+    "reviews": "مراجعات",
+    "by": "بواسطة"
+  },
+  "AiAnalyzerPage": {
+    "productAnalysis": "تحليل المنتج",
+    "enterUrl": "أدخل رابط منتج أمازون أو ASIN لتحليل المراجعات والتفاصيل",
+    "inputPlaceholder": "أدخل رابط أمازون أو ASIN (مثال: https://amazon.com/dp/B07ZPKBL9V)",
+    "analyze": "حلل",
+    "analyzing": "جاري التحليل...",
+    "productOverview": "نظرة عامة على المنتج",
+    "reviews": "مراجعات",
+    "customerInsights": "أفكار العملاء",
+    "averageRating": "التقييم المتوسط",
+    "totalReviews": "إجمالي المراجعات",
+    "reviewsSummary": "ملخص المراجعات:",
+    "totalReviewsLabel": "إجمالي المراجعات:",
+    "withReviews": "بوجود مراجعات:",
+    "totalPages": "إجمالي الصفحات:",
+    "availability": "التوفر:",
+    "productVariations": "خيارات المنتج:",
+    "colors": "الألوان:",
+    "sizes": "المقاسات:",
+    "moreSuffix": "أخرى",
+    "topReviews": "أهم المراجعات",
+    "verified": "موثق",
+    "peopleFoundHelpful": "أشخاص وجدوا هذا مفيدًا",
+    "noReviewsAvailable": "لا توجد مراجعات.",
+    "readyTitle": "جاهز للتحليل",
+    "readyDescription": "أدخل رابط أمازون أو ASIN أعلاه للحصول على تحليل مفصل للمنتج والرأي"
+  },
+  "SettingsDescriptions": {
+    "amazon": "مزامنة المنتجات والطلبات من سوق أمازون",
+    "noon": "أكبر سوق إلكتروني في الشرق الأوسط",
+    "salla": "منصة التجارة الإلكترونية رقم 1 في السعودية",
+    "googleReviews": "راقب وتعامل مع مراجعات العملاء",
+    "shopify": "اربط متجر شوبيفاي الخاص بك",
+    "woocommerce": "حل التجارة الإلكترونية على ووردبريس",
+    "magento": "منصة تجارة إلكترونية للمؤسسات",
+    "trustpilot": "إدارة مراجعات العملاء"
+  }
+}

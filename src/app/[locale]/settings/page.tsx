@@ -1,3 +1,5 @@
+"use client"
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,6 +21,8 @@ import {
 import { Plus, ExternalLink, Settings as SettingsIcon, Star, ShoppingBag, Truck } from "lucide-react"
 import { ForwardRefExoticComponent, RefAttributes } from "react"
 import { LucideProps } from "lucide-react"
+import { useParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 // Define a common interface for both types of integrations
 interface IntegrationType {
@@ -104,6 +108,12 @@ const availableIntegrations: IntegrationType[] = [
 ]
 
 export default function Page() {
+  const params = useParams()
+  const locale = params.locale as string
+  const tNav = useTranslations("Nav")
+  const t = useTranslations("Settings")
+  const d = useTranslations("SettingsDescriptions")
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -118,11 +128,11 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${locale}`}>{tNav("dashboard")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Settings</BreadcrumbPage>
+                  <BreadcrumbPage>{tNav("settings")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -130,10 +140,10 @@ export default function Page() {
         </header>
         <main className="flex flex-1 flex-col gap-6 p-4 pt-0">
           <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold md:text-2xl">Integrations</h1>
+            <h1 className="text-lg font-semibold md:text-2xl">{t("integrations")}</h1>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              Add Integration
+              {t("addIntegration")}
             </Button>
           </div>
 
@@ -156,7 +166,7 @@ export default function Page() {
                             variant={isConnected ? "secondary" : "outline"} 
                             className={`text-xs mt-1 ${isConnected ? 'bg-green-100 text-green-700' : ''}`}
                           >
-                            {isConnected ? "Connected" : "Available"}
+                            {isConnected ? t("connected") : t("available")}
                           </Badge>
                         </div>
                       </div>
@@ -169,23 +179,44 @@ export default function Page() {
                   </CardHeader>
                   <CardContent className="pt-0">
                     <CardDescription className="mb-3">
-                      {integration.description}
+                      {(() => {
+                        switch (integration.name) {
+                          case "Amazon":
+                            return d("amazon")
+                          case "Noon":
+                            return d("noon")
+                          case "Salla":
+                            return d("salla")
+                          case "Google Reviews":
+                            return d("googleReviews")
+                          case "Shopify":
+                            return d("shopify")
+                          case "WooCommerce":
+                            return d("woocommerce")
+                          case "Magento":
+                            return d("magento")
+                          case "Trustpilot":
+                            return d("trustpilot")
+                          default:
+                            return integration.description
+                        }
+                      })()}
                     </CardDescription>
                     {isConnected && (
                       <div className="space-y-2 text-sm mb-3">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Last sync:</span>
+                          <span className="text-muted-foreground">{t("lastSync")}</span>
                           <span>{integration.lastSync}</span>
                         </div>
                         {integration.ordersCount && (
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Orders:</span>
+                            <span className="text-muted-foreground">{t("orders")}</span>
                             <span>{integration.ordersCount.toLocaleString()}</span>
                           </div>
                         )}
                         {integration.reviewsCount && (
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Reviews:</span>
+                            <span className="text-muted-foreground">{t("reviews")}</span>
                             <span>{integration.reviewsCount.toLocaleString()}</span>
                           </div>
                         )}
@@ -194,12 +225,12 @@ export default function Page() {
                     {isConnected ? (
                       <Button variant="outline" size="sm" className="w-full gap-2">
                         <ExternalLink className="h-3 w-3" />
-                        View Details
+                        {t("viewDetails")}
                       </Button>
                     ) : (
                       <Button className="w-full gap-2">
                         <Plus className="h-3 w-3" />
-                        Connect
+                        {t("connect")}
                       </Button>
                     )}
                   </CardContent>

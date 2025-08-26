@@ -1,6 +1,7 @@
 "use client"
 
 import { type LucideIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import {
   SidebarGroup,
@@ -15,23 +16,29 @@ export function NavMain({
 }: {
   items: {
     title: string
-    url: string
+    url?: string
     icon?: LucideIcon
     isActive?: boolean
+    customComponent?: React.ReactNode
   }[]
 }) {
+  const t = useTranslations("Nav")
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("platform")}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton tooltip={item.title} asChild>
-              <a href={item.url}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </a>
-            </SidebarMenuButton>
+            {item.customComponent ? (
+              item.customComponent
+            ) : (
+              <SidebarMenuButton tooltip={item.title} asChild>
+                <a href={item.url}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </a>
+              </SidebarMenuButton>
+            )}
           </SidebarMenuItem>
         ))}
       </SidebarMenu>

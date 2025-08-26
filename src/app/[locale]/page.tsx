@@ -1,3 +1,5 @@
+"use client"
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -24,8 +26,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Brain, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
+import { useParams } from "next/navigation"
 
 export default function Home() {
+  const t = useTranslations("Dashboard")
+  const params = useParams()
+  const locale = params.locale as string
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -40,11 +48,11 @@ export default function Home() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${locale}`}>{t("title")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Overview</BreadcrumbPage>
+                  <BreadcrumbPage>{t("overview")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -59,16 +67,16 @@ export default function Home() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Brain className="h-5 w-5 text-primary" />
-                  AI Product Analyzer
+                  {t("aiProductAnalyzer")}
                 </CardTitle>
                 <CardDescription className="text-sm">
-                  Analyze reviews of your products using advanced AI
+                  {t("aiProductAnalyzerDescription")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Link href="en/ai-analyzer">
+                <Link href={`/${locale}/ai-analyzer`}>
                   <Button className="w-full group-hover:shadow-md transition-all duration-200" size="sm">
-                    Analyze Now
+                    {t("analyzeNow")}
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
                   </Button>
                 </Link>
