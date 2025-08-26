@@ -15,8 +15,26 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { ProductCard } from "@/components/ui/product-card"
-import Image from "next/image";
 import { Plus } from "lucide-react";
+
+interface ProductData {
+  asin: string;
+  product_title: string;
+  product_price: string;
+  currency: string;
+  country: string;
+  product_byline: string;
+  product_star_rating: number | null;
+  product_num_ratings: number;
+  product_url: string;
+  product_photo: string;
+  product_availability: string;
+  category: {
+    id: string;
+    name: string;
+    link: string;
+  };
+}
 
 
 const productData = {
@@ -95,7 +113,8 @@ const productData = {
     "primary_delivery_time": "الخميس، 28 أغسطس",
     "category": {
       "id": "aps",
-      "name": "ألعاب الفيديو"
+      "name": "ألعاب الفيديو",
+      "link": "#"
     },
     "category_path": [
       {
@@ -212,10 +231,10 @@ export default function Page() {
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 pt-10">
           <div className="grid grid-cols-4 gap-4">
-            <ProductCard product={productData.data as any} />
-            <ProductCard product={product2 as any} />
-            <ProductCard product={product3 as any} />
-            <ProductCard product={product4 as any} />
+            <ProductCard product={productData.data as ProductData} />
+            <ProductCard product={product2 as ProductData} />
+            <ProductCard product={product3 as ProductData} />
+            <ProductCard product={product4 as ProductData} />
           </div>
           <div className="flex items-center justify-center">
             <Button>

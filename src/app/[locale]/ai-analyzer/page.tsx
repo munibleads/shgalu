@@ -19,8 +19,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, Package, DollarSign, Users, MessageSquare } from "lucide-react"
+import { Star, Package, Users, MessageSquare } from "lucide-react"
 import { useState } from "react"
+import Image from "next/image"
 
 interface Review {
   author: string
@@ -31,7 +32,7 @@ interface Review {
   date: string
   helpful_count: number
   image_urls: string[]
-  product_variation: any
+  product_variation: Record<string, unknown> | null
   rating: string
   review_id: string
   review_url: string
@@ -55,7 +56,7 @@ interface ReviewsResponse {
   with_reviews?: number
   total_pages?: number
   current_page?: number
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface ProductData {
@@ -300,9 +301,11 @@ export default function Page() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <img
+                    <Image
                       src={productData.product_images[0]}
                       alt={productData.title}
+                      width={300}
+                      height={200}
                       className="w-full h-48 object-contain rounded-lg"
                     />
                     <div className="space-y-2">
@@ -431,7 +434,7 @@ export default function Page() {
                   <div className="space-y-4 max-h-96 overflow-y-auto">
                     {reviewsData && (reviewsData.data?.reviews || reviewsData.reviews) && (reviewsData.data?.reviews || reviewsData.reviews)!.length > 0 ? (
                       <div className="space-y-4">
-                        {(reviewsData.data?.reviews || reviewsData.reviews)!.slice(0, 10).map((review, index) => (
+                        {(reviewsData.data?.reviews || reviewsData.reviews)!.slice(0, 10).map((review) => (
                           <div key={review.review_id} className="border-b pb-4 last:border-b-0">
                             <div className="flex items-start gap-3">                              
                               <div className="flex-1 space-y-2">

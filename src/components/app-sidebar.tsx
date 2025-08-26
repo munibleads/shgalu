@@ -1,33 +1,26 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import {
   AudioWaveform,
-  BookOpen,
   Bot,
   Command,
   FileText,
-  Frame,
   GalleryVerticalEnd,
   LayoutDashboard,
-  Map,
   Package,
-  PieChart,
   Settings2,
-  SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { useSidebar } from "@/components/ui/sidebar"
 
@@ -91,7 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="h-18 w-full flex flex-row items-center justify-start p-0 pl-4">
-        {!isCollapsed && <img src="/shagalu_logo.png" alt="Shagalu Logo" className="h-14 w-auto" />}
+        {!isCollapsed && <Image src="/shagalu_logo.png" alt="Shagalu Logo" width={100} height={56} className="h-14 w-auto" />}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
