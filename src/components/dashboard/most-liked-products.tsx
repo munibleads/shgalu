@@ -1,0 +1,83 @@
+import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+const likedProducts = [
+  {
+    name: "Stellar HD Drone",
+    positiveMentions: 152,
+    rating: 4.9,
+  },
+  {
+    name: "Apex Gaming Laptop",
+    positiveMentions: 138,
+    rating: 4.8,
+  },
+  {
+    name: "Zenith Smartwatch",
+    positiveMentions: 120,
+    rating: 4.8,
+  },
+  {
+    name: "Orion VR Headset",
+    positiveMentions: 115,
+    rating: 4.7,
+  },
+  {
+    name: "Eclipse Headphones",
+    positiveMentions: 105,
+    rating: 4.7,
+  },
+]
+
+export function MostLikedProducts() {
+  return (
+    <Card className="h-full">
+      <CardHeader>
+        <CardTitle>Most Liked Products</CardTitle>
+        <CardDescription>
+          Products with the highest positive feedback.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Product</TableHead>
+              <TableHead className="text-right">Pos. Mentions</TableHead>
+              <TableHead className="text-right">Avg. Rating</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {likedProducts.map((product) => (
+              <TableRow key={product.name}>
+                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="text-right">
+                  {product.positiveMentions}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Badge variant="outline" className="text-emerald-500 border-emerald-500">
+                    {product.rating.toFixed(1)}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  )
+}
