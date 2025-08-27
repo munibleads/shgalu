@@ -19,8 +19,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, Package, Users, MessageSquare } from "lucide-react"
-import { useState } from "react"
+import { Star, Package, Users, MessageSquare, Brain, AlertTriangle } from "lucide-react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { useTranslations } from "next-intl"
@@ -112,6 +112,86 @@ export default function Page() {
   const [reviewsData, setReviewsData] = useState<ReviewsResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [geminiAnalysis, setGeminiAnalysis] = useState<string | null>(null)
+  const [geminiLoading, setGeminiLoading] = useState(false)
+
+  const analyzeNegativeReviews = async () => {
+    if (!reviewsData) return
+    
+    setGeminiLoading(true)
+    setGeminiAnalysis(null)
+    
+    try {
+      // Filter 1-2 star reviews
+      const reviews = reviewsData.data?.reviews || reviewsData.reviews || []
+      console.log('All reviews for filtering:', reviews.map(r => ({ rating: r.rating, title: r.title })))
+      
+      // No need to filter reviews manually, as API should handle it
+      const negativeReviews = reviews
+      
+      console.log(`Found ${negativeReviews.length} negative reviews out of ${reviews.length} total`)
+      
+      if (negativeReviews.length === 0) {
+        setGeminiAnalysis(`No negative reviews (1-2 stars) found to analyze. Found ${reviews.length} total reviews.`)
+        return
+      }
+      
+      // Prepare review text for analysis
+      const reviewTexts = negativeReviews.map(review => 
+        `Rating: ${review.rating} | Title: ${review.title} | Review: ${review.body}`
+      ).join('\n\n')
+      
+      const prompt = `قم بتحليل هذه المراجعات السلبية لمنتج أمازون وحدد المشاكل الرئيسية التي يشكو منها العملاء. قدم ملخصًا موجزًا لأهم 3-5 مشاكل شائعة مذكورة:
+
+${reviewTexts}
+
+يرجى تنسيق الإجابة كالتالي:
+**المشاكل الرئيسية الموجودة:**
+1. [فئة المشكلة] - [وصف موجز وتكرار المشكلة]
+2. [فئة المشكلة] - [وصف موجز وتكرار المشكلة]
+وهكذا...
+
+ركز على الرؤى القابلة للتنفيذ حول جودة المنتج، والحجم، والوظائف، أو مشاكل الخدمة. أجب باللغة العربية فقط.`
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AIzaSyC1DAUp3bnc5YqaxfQL7T8E-SMwPqLRJjs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }]
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`Gemini API error: ${response.status}`)
+      }
+      
+      const result = await response.json()
+      const analysisText = result.candidates?.[0]?.content?.parts?.[0]?.text || "Analysis could not be generated."
+      
+      setGeminiAnalysis(analysisText)
+      
+    } catch (err) {
+      console.error('Gemini analysis error:', err)
+      setGeminiAnalysis(`Error analyzing reviews: ${String(err)}`)
+    } finally {
+      setGeminiLoading(false)
+    }
+  }
+
+  // Auto-trigger analysis when reviews data is available
+  useEffect(() => {
+    if (reviewsData && !geminiAnalysis && !geminiLoading) {
+      console.log('useEffect triggered - starting analysis')
+      // No longer need setTimeout, trigger immediately if reviewsData is available and analysis hasn't started
+      analyzeNegativeReviews()
+    }
+  }, [reviewsData, geminiAnalysis, geminiLoading])
 
   const extractASIN = (input: string): string | null => {
     // Remove whitespace
@@ -158,13 +238,15 @@ export default function Page() {
 
     setProductData(null)
     setReviewsData(null)
+    setGeminiAnalysis(null)
+    setGeminiLoading(false)
     setLoading(true)
     setError("")
 
     try {
       // Fetch product data and reviews in parallel
       const productUrl = `https://amazon-online-data-api.p.rapidapi.com/product?asins=${asin}&geo=SA`
-      const reviewsUrl = `https://amazon-online-data-api.p.rapidapi.com/v2/product-reviews?geo=SA&page=1&asin=${asin}&filter_by_star=&media_reviews_only=false`
+      const reviewsUrl = `https://amazon-online-data-api.p.rapidapi.com/v2/product-reviews?geo=SA&page=1&asin=${asin}&filter_by_star=1&media_reviews_only=false`
       
       const options: RequestInit = {
         method: 'GET',
@@ -209,12 +291,19 @@ export default function Page() {
       
       if (reviewsResult && (reviewsResult.success || reviewsResult.data || reviewsResult.reviews)) {
         setReviewsData(reviewsResult)
+      } else if (Object.keys(reviewsResult).length === 0) {
+        // API returned an empty object, treat as no reviews found for the filter
+        console.warn('Reviews API Warning: No reviews found for the specified filters (empty response object).')
+        setReviewsData({ reviews: [], total_reviews: 0, with_reviews: 0, total_pages: 0, current_page: 0 })
       } else {
         console.error('Reviews API Error - unexpected format:', reviewsResult)
         // Don't return error for reviews, as product data is still valuable
       }
 
       setInput("")
+      
+      // Automatically trigger AI analysis after all data is loaded
+      // Analysis is now triggered by the useEffect hook once reviewsData is set
     } catch (err) {
       setError("Error fetching data: " + String(err))
     } finally {
@@ -266,7 +355,7 @@ export default function Page() {
         <main className="flex flex-1 flex-col gap-4 p-4 pt-10">
 
           {/* Input Section */}
-          <Card>
+          <Card className="bg-accent/22">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
@@ -296,9 +385,101 @@ export default function Page() {
 
           {/* Results Section */}
           {productData && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Product Overview */}
-              <Card>
+            <div className="space-y-6">
+              {/* AI Analysis Card - Top Row */}
+              <Card className="border-2 border-gray-200 bg-white shadow-lg">
+                <CardHeader className="bg-white border-b border-gray-200">
+                  <CardTitle className="flex items-center gap-3 text-lg text-gray-800">
+                    <div className="p-2 bg-blue-100 rounded-full">
+                      <Brain className="h-6 w-6 text-blue-600" />
+                    </div>
+                    تحليل الذكي للمراجعات السلبية
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 mt-2">
+                    تحليل المراجعات ذات النجمة والنجمتين لتحديد الشكاوى والمشاكل الشائعة للعملاء
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    {!geminiAnalysis && !geminiLoading && (
+                      <div className="text-center py-8">
+                        <div className="relative">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-20"></div>
+                          </div>
+                          <AlertTriangle className="h-12 w-12 text-blue-600 mx-auto mb-4 relative z-10" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">في انتظار التحليل</h3>
+                        <p className="text-sm text-gray-600 max-w-md mx-auto">
+                          سيبدأ التحليل الذكي تلقائياً بعد تحميل بيانات المنتج والمراجعات
+                        </p>
+                      </div>
+                    )}
+                    
+                    {geminiLoading && (
+                      <div className="text-center py-10">
+                        <div className="relative">
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-20 h-20 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full animate-pulse"></div>
+                          </div>
+                          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4 relative z-10"></div>
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">جاري التحليل...</h3>
+                        <p className="text-sm text-gray-600">يتم تحليل المراجعات باستخدام الذكاء الاصطناعي</p>
+                        <div className="mt-4 w-64 mx-auto bg-gray-200 rounded-full h-2">
+                          <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full animate-pulse" style={{width: '70%'}}></div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {geminiAnalysis && (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-green-100 rounded-full">
+                              <Brain className="h-5 w-5 text-green-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-green-800">نتائج التحليل</h4>
+                              <p className="text-sm text-green-600">تم إنجاز التحليل بنجاح</p>
+                            </div>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={analyzeNegativeReviews}
+                            disabled={geminiLoading}
+                            className="gap-2 border-green-300 text-green-700 hover:bg-green-50"
+                          >
+                            <Brain className="h-3 w-3" />
+                            إعادة التحليل
+                          </Button>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="prose prose-sm max-w-none text-right" dir="rtl" style={{fontFamily: 'system-ui, -apple-system, sans-serif'}}>
+                            {geminiAnalysis.split('\n').map((line, index) => (
+                              <p key={index} className="mb-3 last:mb-0 leading-relaxed">
+                                {line.startsWith('**') && line.endsWith('**') ? (
+                                  <strong className="text-lg text-gray-800 block mb-2">{line.slice(2, -2)}</strong>
+                                ) : line.match(/^\d+\./) ? (
+                                  <span className="block mr-4 p-2 bg-gray-50 rounded-lg border-r-4 border-blue-500 text-gray-700">{line}</span>
+                                ) : line.trim() ? (
+                                  <span className="text-gray-600">{line}</span>
+                                ) : null}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Product Data Cards - Second Row */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Product Overview */}
+                <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5" />
@@ -481,6 +662,7 @@ export default function Page() {
                   </div>
                 </CardContent>
               </Card>
+              </div>
             </div>
           )}
 

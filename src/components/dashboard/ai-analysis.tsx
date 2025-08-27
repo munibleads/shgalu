@@ -88,7 +88,7 @@ export function AiAnalysis() {
   }))
 
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-accent/22">
       <CardHeader>
         <CardTitle>{t("title")}</CardTitle>
         <CardDescription>{t("description")}</CardDescription>

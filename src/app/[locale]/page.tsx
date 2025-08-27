@@ -63,7 +63,7 @@ export default function Home() {
             <OverallSentimentScore />
             <TotalReviews />
             <NegativeFeedbackTrend />
-            <Card className="group hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20">
+            <Card className="group hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20 bg-accent/22">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Brain className="h-5 w-5 text-primary" />
